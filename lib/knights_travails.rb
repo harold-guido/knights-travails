@@ -1,4 +1,2 @@
-class Knight
-  def moves(start, finish)
-  end
+def knight_moves(start, finish)
 end
