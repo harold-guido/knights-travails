@@ -30,8 +30,18 @@ describe Knight do
 end
 
 describe PositionNode do
-  it "Returns an array" do
-    pos_node = PositionNode.new([4,4])
-    expect(pos_node.next_positions.is_a?(Array)).to eql(true)
+  test_node = PositionNode.new([4,4])
+  describe "#find_next_positions" do
+    it "Returns an array" do
+      expect(test_node.next_positions.is_a?(Array)).to eql(true)
+    end
+
+    it "Returns an array of PositionNodes" do
+      expect(test_node.next_positions[0].is_a?(PositionNode)).to eql(true)
+    end 
+
+    it "Returns an array of size 8" do
+      expect(test_node.next_positions.length).to eql(8)
+    end
   end
 end
