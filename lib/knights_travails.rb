@@ -8,29 +8,26 @@ class Knight
     @root_position = KnightPositionNode.new(position)
   end
 
+  def make_linked_array_list(node = @root_position)
+
+  end
+
   def moves_to(finish, position_node = @root_position, shortest_path = [], path = [])
-    p position_node
-    if position_node.next_positions == nil then
-      [nil]
-    elsif position_node.position == finish
+    if position_node.position == finish
       finish
+    elsif position_node.position == [nil] then
+      [nil]
     else
 
       position_node.next_positions.each do |next_position_node|
-        p next_position_node
 
         path << position_node.position
         path << moves_to(finish, next_position_node)
 
-        found_finish = path[-1] != [nil]
-        no_shortest_path = shortest_path.length == 0
-        new_shortest_path = path.length < shortest_path.length
-
-        if (no_shortest_path || new_shortest_path) && found_finish then
+        if path[-1] != [nil] &&
+        (shortest_path.length == 0 || path.length < shortest_path.length)
+        then
           shortest_path = path
-          path = []
-        else
-          path = []
         end
       end
       shortest_path
@@ -57,12 +54,10 @@ class KnightPositionNode
         new_y = @y + move_y
         if new_x.between?(0,8) && new_y.between?(0,8) && !previous_positions.include?([new_x,new_y]) then
           next_positions.push(KnightPositionNode.new([new_x,new_y], previous_positions))
-        else
-          return nil
         end
       end
     end
-    return next_positions
+    next_positions.length == 0 ? (return [nil]) : (return next_positions)
   end
 end
 
