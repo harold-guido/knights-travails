@@ -27,17 +27,29 @@ describe "#knight_moves" do
 end
 
 describe Knight do
+  p test_knight = Knight.new([3,3])
+  describe "#moves_to" do
+    it "returns array" do
+      expect(test_knight.moves_to([4,3]).class).to eql(Array)
+    end
+    it "returns array of arrays" do
+      expect(test_knight.moves_to([4,3])[0].class).to eql(Array)
+    end
+    it "returns arrays of arrays of position nodes" do
+      expect(test_knight.moves_to([4,3])[0][0].class).to eql(KnightPositionNode)
+    end
+  end
 end
 
-describe PositionNode do
-  test_node = PositionNode.new([4,4])
+describe KnightPositionNode do
+  test_node = KnightPositionNode.new([3,3])
   describe "#find_next_positions" do
     it "Returns an array" do
       expect(test_node.next_positions.is_a?(Array)).to eql(true)
     end
 
-    it "Returns an array of PositionNodes" do
-      expect(test_node.next_positions[0].is_a?(PositionNode)).to eql(true)
+    it "Returns an array of KnightPositionNodes" do
+      expect(test_node.next_positions[0].is_a?(KnightPositionNode)).to eql(true)
     end 
 
     it "Returns an array of size 8" do
