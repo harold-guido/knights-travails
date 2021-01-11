@@ -14,24 +14,20 @@ class Knight
 
   def moves_to(finish, position_node = @root_position, shortest_path = [], path = [])
     if position_node.position == finish
-      finish
+      [finish]
     elsif position_node.position == [nil] then
       [nil]
     else
-
       position_node.next_positions.each do |next_position_node|
 
         path << position_node.position
-        path << moves_to(finish, next_position_node)
+        path += moves_to(finish, next_position_node)
 
-        if path[-1] != [nil] &&
-        (shortest_path.length == 0 || path.length < shortest_path.length)
-        then
-          shortest_path = path
+        if shortest_path.length == 0 || path.length < shortest_path.length then
+          shortest_path = path unless shortest_path[-1] == [nil]
         end
       end
       shortest_path
-
     end
   end
 end
@@ -39,21 +35,28 @@ end
 class KnightPositionNode
   attr_accessor :position, :next_positions
 
-  def initialize(position, previous_positions = [])
+  def initialize(position, next_positions = find_next_positions(position))
     @position = position
-    @x = position[0]
-    @y = position[1]
-    @next_positions = find_next_positions(position, previous_positions)
+    @next_positions = next_positions
   end
 
-  def find_next_positions(position, previous_positions, next_positions = [])
-    previous_positions.push(position)
+  def find_next_positions(position, 
+                          previous_positions = [position], 
+                          restart_previous_positions = true, 
+                          next_positions = [])
+
     $moves.each do |move_x, key|
       key.each do |move_y|
-        new_x = @x + move_x
-        new_y = @y + move_y
-        if new_x.between?(0,8) && new_y.between?(0,8) && !previous_positions.include?([new_x,new_y]) then
-          next_positions.push(KnightPositionNode.new([new_x,new_y], previous_positions))
+        new_x = position[0] + move_x
+        new_y = position[1] + move_y
+
+        if new_x.between?(0,7) && new_y.between?(0,7) && !previous_positions.include?([new_x,new_y]) then
+          previous_positions << [new_x,new_y]
+          next_positions << KnightPositionNode.new([new_x,new_y], find_next_positions([new_x,new_y],
+                                                                        previous_positions,
+                                                                        false))
+          
+          restart_previous_positions == true ? previous_positions = [] : previous_positions
         end
       end
     end
