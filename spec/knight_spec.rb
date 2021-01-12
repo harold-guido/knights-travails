@@ -20,10 +20,13 @@ describe Board do
     end
   end
 
+
   describe "#place_knight" do
-    it "removes position from available places" do
+    it "removes position from available positions" do
       @board.place_knight([2,3])
+      @board.place_knight([0,0])
       expect(@board.available?([2,3])).to eql(false)
+      expect(@board.available?([0,0])).to eql(false)
     end
 
     it "does not give an error when the position is not available" do
@@ -33,9 +36,21 @@ describe Board do
   end
 
   describe "#remove_knight" do
-  end
+    it "removes position from taken positions and adds it to available positions" do
+      @board.place_knight([0,0])
+      @board.remove_knight([0,0])
+      expect(@board.available?([0,0]).to eql(true)
+    end
 
-  describe "#clear_board" do
+    it "does not give an error when the position is already available" do
+      expect{ @board.remove_knight }
+    end
+  end
+end
+
+#TESTS FOR KNIGHT CLASS
+describe Knight do
+  describe "" do
   end
 end
 
@@ -45,6 +60,3 @@ describe "#knight_moves" do
   end
 end
 
-#TESTS FOR KNIGHT CLASS
-describe Knight do
-end

@@ -10,10 +10,26 @@ class Board
       end
     end
     @available_positions = @positions
+    @taken_positions = []
   end
 
   def available?(position)
     @available_positions.include?(position) ? true : false
+  end
+
+  def place_knight(position)
+    @available_positions.include?(position) ? 
+      @taken_positions << @available_positions.delete(position) : nil
+  end
+
+  def remove_knight(position = "all")
+    if position == "all" then
+      @taken_positions = []
+      @available_positions = @positions
+    else
+      @taken_positions.include?(position) ?
+      @available_positions << @taken_positions.delete(position) : nil
+    end
   end
 end
 
