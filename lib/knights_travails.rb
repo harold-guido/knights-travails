@@ -16,70 +16,52 @@ class Board
   end
 
   def place_knight(position)
-    @available_positions.include?(position) ? 
-      @taken_positions << @available_positions.delete(position) : nil
+    @available_positions.delete(position)
   end
 
-  def remove_knight(position = "all")
-    if position == "all" then
-      @taken_positions = []
-      @available_positions = @positions
-    else
-      @taken_positions.include?(position) ?
-      @available_positions << @taken_positions.delete(position) : nil
-    end
+  def clear()
+    @available_positions = @positions
   end
 end
 
 class Knight < Board 
-  attr_accessor :root_position
+  attr_accessor :root_position, :next_positions
 
   @@MOVES = [[2,1],[2,-1],[-2,1],[-2,-1],[1,2],[1,-2],[-1,2],[-1,-2]]
   @@BOARD = Board.new
 
   def initialize(position)
-    @root_position = PositionNode.new(position)
-  end
-
-  def make_position_tree(position = @root_position, counter = 0)
-    position.list_next_positions()
-
-    if position.next_positions == nil then
-      return "Tree complete"
-    else
-      counter += 1
-      unless counter == 6 then
-        position.next_positions.each do |position_node|
-          make_position_tree(position_node, counter)
-        end
-      end
-    end
+    @root_node = Node.new(position)
+    @@BOARD.clear
   end
 end
 
-class PositionNode < Knight
+class Node < Knight
   attr_accessor :position, :next_positions
 
   def initialize(position, previous_position = nil, next_positions = nil)
     @previous_position = previous_position
     @position = position
     @next_positions = next_positions
+
+    self.list_next
   end
 
-  def list_next_positions(next_positions = [], previous_positions = self.list_previous_positions)
+  def list_next(next_positions = [])
     @@MOVES.each do |move|
       new_x = @position[0] + move[0]
       new_y = @position[1] + move[1]
 
-      if @@BOARD.available?([new_x,new_y]) && !previous_positions.include?([new_x,new_y]) then
+      if @@BOARD.available?([new_x,new_y]) then
+        @@BOARD.place_knight([new_x,new_y])
         next_positions.push([new_x,new_y])
       end
     end
 
-    if next_positions.length < 2 then
-      @next_positions = nil
+    if next_positions.length != 0 then
+      @next_positions = next_positions.map{ |position| Node.new(position, self) }
     else
-      @next_positions = next_positions.map{ |position| PositionNode.new(position, self) } 
+      @next_positions = nil
     end
   end
 
@@ -91,9 +73,15 @@ class PositionNode < Knight
       previous_position += @previous_position.list_previous_positions
     end
   end
+
+  def next_positions_array()
+    return_array = []
+    @next_positions.each{ |node| return_array.push(node.position) } unless @next_positions == nil
+    return_array
+  end
 end
 
 def knight_moves(start,finish)
   knight = Knight.new(start)
-  knight.make_position_tree
+  knight.bfs(finish).list_previous_positions
 end

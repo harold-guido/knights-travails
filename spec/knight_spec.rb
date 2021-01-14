@@ -52,13 +52,19 @@ end
 
 #TESTS FOR KNIGHT CLASS
 describe Knight do
-  before(:all) do
-    @knight = Knight.new([0,0])
-  end
+  describe "#make_node_array_list" do
+    before(:each) do
+      @knight = Knight.new([3,3])
+    end
 
-  describe "#make_position_tree" do
-    it "does not give an error when called" do
-      expect{ @knight.make_position_tree }.not_to raise_error
+    it "returns"
+  end
+end
+
+describe Node do
+  describe "#list_next" do
+    it "does not raise an error" do
+      expect{ @knight = Knight.new([3,3]) }.not_to raise_error
     end
   end
 end
@@ -68,4 +74,3 @@ describe "#knight_moves" do
   it "returns an array" do
   end
 end
-
