@@ -4,8 +4,10 @@ require './lib/knights_travails'
 #TESTS FOR BOARD CLASS
 describe Board do
   before(:all) do
+    #SETTING NEW BOARD
     @board = Board.new
   end
+
   describe "#available?" do
     it "returns true for positions inside board" do
       expect(@board.available?([0,0])).to eql(true)
@@ -39,7 +41,7 @@ describe Board do
     it "removes position from taken positions and adds it to available positions" do
       @board.place_knight([0,0])
       @board.remove_knight([0,0])
-      expect(@board.available?([0,0]).to eql(true)
+      expect(@board.available?([0,0])).to eql(true)
     end
 
     it "does not give an error when the position is already available" do
@@ -50,7 +52,14 @@ end
 
 #TESTS FOR KNIGHT CLASS
 describe Knight do
-  describe "" do
+  before(:all) do
+    @knight = Knight.new([0,0])
+  end
+
+  describe "#make_position_tree" do
+    it "does not give an error when called" do
+      expect{ @knight.make_position_tree }.not_to raise_error
+    end
   end
 end
 
