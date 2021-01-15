@@ -107,6 +107,9 @@ end
 #TESTS FOR KNIGHT_MOVES METHOD
 describe "#knight_moves" do
   it "shortest path from one cell to another" do
-    expect(knight_moves([0,0],[7,7])).to eq([[0,0]])
+    expect(knight_moves([3,3],[7,7])).to eq([[0,0]])
+  end
+  it "shortest path form one cell to another, for longest possible path" do
+    expect(knight_moves([0,0],[7,7])).to eq([[0, 0]])
   end
 end

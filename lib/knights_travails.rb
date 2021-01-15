@@ -1,14 +1,19 @@
 #ALL MOVE VECTORS FOR KNIGHT
 class Board
+  attr_accessor :available_positions, :positions
   def initialize()
-    @positions = []
+    @POSITIONS = create_board()
+    @available_positions = @POSITIONS
+    @taken_positions = []
+  end
+
+  def create_board(board = [])
     8.times do |x|
       8.times do |y|
-        @positions << [x,y]
+        board << [x,y]
       end
     end
-    @available_positions = @positions
-    @taken_positions = []
+    board
   end
 
   def available?(position)
@@ -20,7 +25,7 @@ class Board
   end
 
   def clear()
-    @available_positions = @positions
+    @available_positions = @POSITIONS
   end
 end
 
@@ -28,7 +33,7 @@ class Knight < Board
   attr_accessor :root_node, :next_positions
 
   @@MOVES = [[2,1],[2,-1],[-2,1],[-2,-1],[1,2],[1,-2],[-1,2],[-1,-2]]
-  @@BOARD = Board.new
+  @@BOARD = Board.new()
 
   def initialize(position)
     @root_node = Node.new(position)
@@ -59,6 +64,7 @@ class Node < Knight
 
   def self.breadth_first_list_next(node_queue, next_queue = [])
     if node_queue.is_a?(Node)
+      @@BOARD = Board.new()
       node_queue.list_next()
 
       next_queue = node_queue.next_positions
