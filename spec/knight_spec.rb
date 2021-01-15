@@ -1,4 +1,4 @@
-require './lib/knights_travails'
+require '../lib/knight_moves'
 
 
 #TESTS FOR BOARD CLASS
@@ -22,7 +22,6 @@ describe Board do
     end
   end
 
-
   describe "#place_knight" do
     it "removes position from available positions" do
       @board.place_knight([2,3])
@@ -34,18 +33,6 @@ describe Board do
     it "does not give an error when the position is not available" do
       @board.place_knight([3,3])
       expect{ @board.place_knight([3,3]) }.not_to raise_error
-    end
-  end
-
-  describe "#remove_knight" do
-    it "removes position from taken positions and adds it to available positions" do
-      @board.place_knight([0,0])
-      @board.remove_knight([0,0])
-      expect(@board.available?([0,0])).to eql(true)
-    end
-
-    it "does not give an error when the position is already available" do
-      expect{ @board.remove_knight }
     end
   end
 end
